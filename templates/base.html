@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}New better Twitter{% endblock %}</title>
+</head>
+<body>
+    <div id="header">
+    <h1>
+        {% block header %}
+
+        {% endblock %}
+    </h1>
+    </div>
+
+    <div id="name">
+        {% block name %}
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div id="footer">
+        {% block footer %}
+            <h6>Copyright by VanHohenheim 2018</h6>
+        {% endblock %}
+    </div>
+
+</body>
+</html>
