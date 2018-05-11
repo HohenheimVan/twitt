@@ -5,5 +5,24 @@
 {% endblock %}
 
 {% block content %}
+    <a href="/login/">Login</a>
+    <form action="/add_twitt/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Add">
+    </form>
+
+    {% for twitt in twitts %}
+         <table>
+        <tr>
+            <td><h5>{{ twitt.user.username }}</h5></td><td><a href="/content/">{{ twitt.content }}</a></td><td>{{ twitt.creation_date }}</td>
+        </tr>
+    </table>
+
+    {% endfor %}
+
+    <h5>
+        <a href="/add_twitt/">Add twitt</a>
+    </h5>
 
 {% endblock %}

@@ -1,2 +1,7 @@
-.idea/
 *.pyc
+*.pyo
+env/
+tags
+.idea/
+__pycache__/
+

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block name %}
+    {{ user }}
+{% endblock %}
+
+{% block content %}
+
+    {% for twitt in twitts %}
+
+        {{ twitt.content }}
+        <h5>
+            {{ twitt.creation_date }}
+        </h5>
+    {% endfor %}
+
+{% endblock %}

@@ -5,18 +5,12 @@
     <title>{% block title %}New better Twitter{% endblock %}</title>
 </head>
 <body>
-    <div id="header">
     <h1>
-        {% block header %}
-
-        {% endblock %}
+        <div id="name">
+            {% block name %}
+            {% endblock %}
+        </div>
     </h1>
-    </div>
-
-    <div id="name">
-        {% block name %}
-        {% endblock %}
-    </div>
 
     <div id="content">
         {% block content %}

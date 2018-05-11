@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block name %}
+    Register
+{% endblock %}
+
+{% block content %}
+
+    <form action="" method="post" class="form-group">
+        {% csrf_token %}
+    {{ form.as_p }}
+        <button type="submit" value="login" class="btn btn-dark">
+            Register
+        </button>
+    </form>
+    {% if message %}
+        <div class="alert alert-dark">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endblock %}

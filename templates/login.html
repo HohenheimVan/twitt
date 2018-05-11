@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block name %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+    <form action="" method="post" class="form-group">
+        {% csrf_token %}
+    {{ form }}
+        <button type="submit" value="login" class="btn btn-dark">
+            login
+        </button>
+    </form>
+        {% if message %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endif %}
+
+    <h6>
+        or <a href="/register/">register here</a>
+    </h6>
+
+{% endblock %}

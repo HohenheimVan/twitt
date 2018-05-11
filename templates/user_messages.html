@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block name %}
+    Messages
+{% endblock %}
+
+{% block content %}
+
+    <h3>Wiadomosci otrzymane</h3>
+
+    {% for message in messages %}
+
+        {{ message.sender }}
+        {{ message.message }}
+        {{ message.msg_date }}
+
+    {% endfor %}
+
+    <h3>Wiadomosci wyslane</h3>
+
+
+
+    <h5>
+        <a href="/add_twitt/">Add twitt</a>
+    </h5>
+
+{% endblock %}
+
