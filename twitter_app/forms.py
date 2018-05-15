@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import EmailValidator
 
-from twitter_app.models import Twitt
+from twitter_app.models import Twitt, Messages
 
 
 class AddTwittForm(forms.ModelForm):
@@ -20,3 +20,9 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField(label='first-name')
     last_name = forms.CharField(label='last-name')
     email = forms.CharField(label='user-email', validators=[EmailValidator(message='wrong email')])
+
+
+class MessagesForm(forms.ModelForm):
+    class Meta:
+        model = Messages
+        fields = ['message', 'reciever']

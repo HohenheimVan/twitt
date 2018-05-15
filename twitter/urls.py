@@ -30,7 +30,4 @@ urlpatterns = [
     url(r'register/$', RegisterView.as_view(), name='register'),
 
 
-
-
-
 ]

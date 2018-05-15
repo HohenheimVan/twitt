@@ -12,7 +12,7 @@ class IndexView(View):
     def get(self, request):
         form = AddTwittForm()
         twitts = Twitt.objects.all()
-        return render(request, 'index.html', {'twitts': twitts, 'form': form})
+        return render(request, 'index.html', {'twitts': twitts, 'form': form, 'User': User})
 
     def post(self, request):
         form = AddTwittForm(request.POST)
@@ -69,7 +69,7 @@ class LoginView(View):
         form = LoginForm()
         return render(request, 'login.html', {'form': form})
 
-    def post(self,request):
+    def post(self, request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
@@ -78,7 +78,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/user_page/')
+                return redirect('/user/{}'.format(request.user.pk))
 
             else:
                 return render(request, 'login.html', {'form': form, 'message': 'Wrong login or password'})
