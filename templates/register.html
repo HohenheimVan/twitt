@@ -9,13 +9,17 @@
     <form action="" method="post" class="form-group">
         {% csrf_token %}
     {{ form.as_p }}
-        <button type="submit" value="login" class="btn btn-dark">
+        <button type="submit" value="login" class="btn btn-primary">
             Register
         </button>
     </form>
     {% if message %}
-        <div class="alert alert-dark">
+        <div class="alert alert-danger">
             {{ message }}
+        </div>
+    {% elif success %}
+        <div class="alert alert-success">
+            {{ success }}
         </div>
     {% endif %}
 {% endblock %}

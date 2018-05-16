@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
+{% block head %}
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +14,7 @@
         <!-- Custom styles for this template -->
         <link href={% static "css/offcanvas.css" %} rel="stylesheet">
     </head>
+{% endblock %}
 
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -30,17 +31,25 @@
                         <a class="nav-link" href="/messages/">Messages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/{{ User.id }}">Profile</a>
+                        {% if request.user.is_active == True %}
+                            <a class="nav-link" href="/user/{{ request.user.username }}">My Profile</a>
+                        {% else %}
+                            <a class="nav-link" href="/user/login">My Profile</a>
+                        {% endif %}
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login/">Login</a>
-                    </li>
+                    {% if request.user.is_active == False %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/">Login</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="#">Change password</a>
                             <a class="dropdown-item" href="/register/">Register</a>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            {% if request.user.is_active == True %}
+                                <a class="dropdown-item" href="/logout/">Logout</a>
+                            {% endif %}
                         </div>
                     </li>
                 </ul>
@@ -51,22 +60,104 @@
             </div>
         </nav>
         {% block content %}
-        {% endblock %}
-        <div id="footer" class="bg-dark jumbotron text-center blockquote-footer" style="margin-bottom: 0px; margin-top: 20px">
-            {% block footer %}
-                <h6>HohenheimVan 2018</h6>
-            {% endblock %}
-        </div>
 
+            <main role="main" class="container">
+              <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
+                <div class="lh-100">
+                  <h6 class="mb-0 text-white lh-100">
+                      {{ user.username }}Twitts
+                  </h6>
+                </div>
+              </div>
+
+              <div class="my-3 p-3 bg-white rounded box-shadow">
+                  <div class="form-label-group">
+                      <form action="/add_twitt/" method="post" class="form-group">
+                          {% csrf_token %}
+                          <p>
+                            {{ form.content }}
+                          </p>
+                          <input type="submit" value="Add" class="btn btn-primary">
+                      </form>
+                  </div>
+              </div>
+
+              <div class="my-3 p-3 bg-white rounded box-shadow">
+                  <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
+
+                  {% for twitt in twitts %}
+                    <div class="media text-muted pt-3">
+                        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <strong class="d-block text-gray-dark">@{{ twitt.user.username }}</strong>
+                            <a href="/content/">
+                                {{ twitt.content }} <small>{{ twitt.creation_date }}</small>
+                            </a>
+                        </p>
+                    </div>
+                {% endfor %}
+                <small class="d-block text-right mt-3">
+                    <a href="#">All updates</a>
+                </small>
+              </div>
+
+                    <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>
+        {#                {% for user in User %}#}
+        {#        <div class="media text-muted pt-3">#}
+        {#          <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">#}
+        {#          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">#}
+        {#            <div class="d-flex justify-content-between align-items-center w-100">#}
+        {#              <strong class="text-gray-dark">{{ user.first_name }} {{ user.last_name }}</strong>#}
+        {#              <a href="#">Follow</a>#}
+        {#            </div>#}
+        {#            <span class="d-block">@{{ user.username }}</span>#}
+        {#          </div>#}
+        {#        </div>#}
+        {#                {% endfor %}#}
+                <div class="media text-muted pt-3">
+                  <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                  <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <strong class="text-gray-dark">Full Name</strong>
+                      <a href="#">Follow</a>
+                    </div>
+                    <span class="d-block">@username</span>
+                  </div>
+                </div>
+                <div class="media text-muted pt-3">
+                  <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                  <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <strong class="text-gray-dark">Full Name</strong>
+                      <a href="#">Follow</a>
+                    </div>
+                    <span class="d-block">@username</span>
+                  </div>
+                </div>
+                <small class="d-block text-right mt-3">
+                  <a href="#">All suggestions</a>
+                </small>
+              </div>
+
+            </main>
+        {% endblock %}
+        {% block footer %}
+            <div id="footer" class="bg-dark jumbotron text-center blockquote-footer" style="margin-bottom: 0px; margin-top: 20px">
+
+                <h6>HohenheimVan 2018</h6>
+        {% endblock %}
+        </div>
+{% block js %}
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-{#        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>#}
         <script>window.jQuery || document.write('<script src={% static "assets/js/vendor/jquery-slim.min.js" %}><\/script>')</script>
         <script src={% static "assets/js/vendor/popper.min.js" %}></script>
         <script src={% static "dist/js/bootstrap.min.js" %}></script>
         <script src={% static "assets/js/vendor/holder.min.js" %}></script>
         <script src={% static "css/offcanvas.js" %}></script>
+{% endblock %}
     </body>
 
 </html>

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -11,8 +11,8 @@ from twitter_app.models import Twitt, Messages
 class IndexView(View):
     def get(self, request):
         form = AddTwittForm()
-        twitts = Twitt.objects.all()
-        return render(request, 'index.html', {'twitts': twitts, 'form': form, 'User': User})
+        twitts = Twitt.objects.all().order_by('-creation_date')
+        return render(request, 'index.html', {'twitts': twitts, 'form': form})
 
     def post(self, request):
         form = AddTwittForm(request.POST)
@@ -36,11 +36,12 @@ class AddTwittView(LoginRequiredMixin, View):
             Twitt.objects.create(content=content, user=user)
             return redirect('/', {'form': form})
 
-class UserView(View):
-    def get(self, request, user_id):
-        user = User.objects.get(id=user_id)
-        twitts = Twitt.objects.filter(user__id=user_id)
-        return render(request, 'user.html', {'twitts': twitts})
+class UserView(LoginRequiredMixin, View):
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        twitts = Twitt.objects.filter(user_id=user.pk)
+        return render(request, 'user.html', {'twitts': twitts, 'user': user})
+
 
 
 class ContentDetailsView(View):
@@ -78,7 +79,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/user/{}'.format(request.user.pk))
+                return redirect('/user/{}'.format(request.user.username))
 
             else:
                 return render(request, 'login.html', {'form': form, 'message': 'Wrong login or password'})
@@ -100,13 +101,20 @@ class RegisterView(View):
 
             if password != password2:
                 return render(request, 'register.html', {'form': form, 'message': 'The password does not match'})
+            elif User.objects.filter(email=email):
+                return render(request, 'register.html', {'form': form, 'message': 'email already used by another user'})
             else:
                 try:
                     User.objects.create_user(username=username, email=email, password=password, first_name=first_name,
                                              last_name=last_name)
-                    return render(request, 'register.html', {'form': form, 'message': 'User created'})
+                    return render(request, 'register.html', {'form': form, 'success': 'User created'})
                 except:
                     return render(request, 'register.html', {'form': form, 'message': 'Username already exist'})
         else:
             form = RegisterForm()
             return render(request, 'register.html', {'form': form, 'message': 'Invalid data'})
+
+class UserLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('/')
