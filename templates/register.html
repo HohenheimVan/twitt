@@ -1,25 +1,64 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% block name %}
-    Register
+    <title>Create new account</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href={% static "dist/css/bootstrap.min.css" %} rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href={%  static "css/floating-labels.css" %} rel="stylesheet">
+  </head>
 {% endblock %}
 
-{% block content %}
-
-    <form action="" method="post" class="form-group">
+  <body>
+  {% block content %}
+    <form class="form-signin" method="post">
         {% csrf_token %}
-    {{ form.as_p }}
-        <button type="submit" value="login" class="btn btn-primary">
-            Register
-        </button>
+        <div class="text-center mb-4">
+            <h1 class="h3 mb-3 font-weight-normal">Create new account</h1>
+        </div>
+
+        <div class="form-label-group">
+            {{ form.username }}
+        </div>
+        <div class="form-label-group">
+            {{ form.password }}
+        </div>
+        <div class="form-label-group">
+            {{ form.password2 }}
+        </div>
+        <div class="form-label-group">
+            {{ form.first_name }}
+        </div>
+        <div class="form-label-group">
+            {{ form.last_name }}
+        </div>
+        <div class="form-label-group">
+            {{ form.email }}
+        </div>
+        {% if message %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+        <p class="mt-5 mb-3 text-muted text-lg-center">
+          <a href="/login/">Login</a>
+        </p>
+        <p class="mt-5 mb-3 text-muted text-lg-center">
+          2018
+        </p>
     </form>
-    {% if message %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% elif success %}
-        <div class="alert alert-success">
-            {{ success }}
-        </div>
-    {% endif %}
+
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

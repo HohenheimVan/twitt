@@ -38,9 +38,10 @@ class AddTwittView(LoginRequiredMixin, View):
 
 class UserView(LoginRequiredMixin, View):
     def get(self, request, username):
+        form = AddTwittForm()
         user = User.objects.get(username=username)
         twitts = Twitt.objects.filter(user_id=user.pk)
-        return render(request, 'user.html', {'twitts': twitts, 'user': user})
+        return render(request, 'user.html', {'twitts': twitts, 'user': user, 'form': form})
 
 
 

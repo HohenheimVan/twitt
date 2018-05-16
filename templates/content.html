@@ -8,7 +8,11 @@
     {% for twitt in twitts %}
         <table>
             <tr>
-                <td><h5>{{ twitt.user.username }}</h5></td><td><a href="/content/">{{ twitt.content }}</a></td><td>{{ twitt.creation_date }}</td>
+                <td><h5>{{ twitt.user.username }}</h5></td>
+                <td>
+                    <a href="/content/">{{ twitt.content }}</a>
+                </td>
+                <td>{{ twitt.creation_date }}</td>
             </tr>
         </table>
     {% endfor %}
